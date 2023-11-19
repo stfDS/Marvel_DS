@@ -1,4 +1,3 @@
-require("dotenv").config();
 const axios = require("axios");
 const express = require("express");
 const router = express.Router();
@@ -33,7 +32,6 @@ router.get("/comics/:skip/:title", async (req, res) => {
 
 router.get("/comic/:id", async (req, res) => {
   const comicId = req.params.id;
-  console.log(req.params);
   try {
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comic/${comicId}?apiKey=${process.env.MARVEL_API_KEY}`
