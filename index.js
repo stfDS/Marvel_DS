@@ -8,11 +8,11 @@ app.use(cors());
 // const favoritesRoutes = require("./routes/Favorites");
 const homeRoutes = require("./routes/Home");
 const comicsRoutes = require("./routes/Comics");
-const charactersRoutes = require("./routes/Characters");
+const characterRoutes = require("./routes/Character");
 
 app.use(homeRoutes);
 app.use(comicsRoutes);
-app.use(charactersRoutes);
+app.use(characterRoutes);
 // app.use(favoritesRoutes);
 
 app.all("*", (req, res) => {
