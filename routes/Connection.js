@@ -7,6 +7,11 @@ const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
 
+const corsOptions = {
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
 userRouter.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
@@ -74,7 +79,7 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get("/refresh", isAuthenticated, (req, res) => {
+userRouter.get("/refresh", cors(corsOptions), isAuthenticated, (req, res) => {
   try {
     const user = req.user;
 
@@ -87,7 +92,7 @@ userRouter.get("/refresh", isAuthenticated, (req, res) => {
   }
 });
 
-userRouter.delete("/logout", async (req, res) => {
+userRouter.delete("/logout", cors(corsOptions), async (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ message: "Déconnexion" });
 });
