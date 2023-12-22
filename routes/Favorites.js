@@ -11,16 +11,31 @@ const {
 
 const favRouter = express.Router();
 
-favRouter.get("/favorites", isAuthenticated, (req, res) => {
+const corsOptions = {
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+favRouter.get("/favorites", cors(corsOptions), isAuthenticated, (req, res) => {
   GetFavotites(req, res);
 });
 
-favRouter.post("/addfav/comic", isAuthenticated, (req, res) => {
-  FavComicAdd(req, res);
-});
+favRouter.post(
+  "/addfav/comic",
+  cors(corsOptions),
+  isAuthenticated,
+  (req, res) => {
+    FavComicAdd(req, res);
+  }
+);
 
-favRouter.post("/addfav/character", isAuthenticated, (req, res) => {
-  FavCharacterAdd(req, res);
-});
+favRouter.post(
+  "/addfav/character",
+  cors(corsOptions),
+  isAuthenticated,
+  (req, res) => {
+    FavCharacterAdd(req, res);
+  }
+);
 
 module.exports = favRouter;
