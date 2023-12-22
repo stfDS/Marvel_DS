@@ -1,8 +1,42 @@
-// const express = require("express");
-// const router = express.Router();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
-// router.get("/favorites", (req, res) => {
-//   res.json({ message: "Favorites" });
-// });
+const isAuthenticated = require("../middlewares/isAuthenticated.middleware");
+const {
+  FavCharacterAdd,
+  FavComicAdd,
+  GetFavotites,
+} = require("../controllers/Favorites.contoler");
 
-// module.exports = router;
+const favRouter = express.Router();
+
+const corsOptions = {
+  credentials: true,
+  optionsSuccessStatus: 200,
+  origin: process.env.ORIGIN,
+};
+
+favRouter.get("/favorites", cors(corsOptions), isAuthenticated, (req, res) => {
+  GetFavotites(req, res);
+});
+
+favRouter.post(
+  "/addfav/comic",
+  cors(corsOptions),
+  isAuthenticated,
+  (req, res) => {
+    FavComicAdd(req, res);
+  }
+);
+
+favRouter.post(
+  "/addfav/character",
+  cors(corsOptions),
+  isAuthenticated,
+  (req, res) => {
+    FavCharacterAdd(req, res);
+  }
+);
+
+module.exports = favRouter;
