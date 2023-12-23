@@ -8,6 +8,7 @@ const userRouter = express.Router();
 require("dotenv").config();
 
 const corsOptions = {
+  origin: "https://marvel-ds.netlify.app",
   credentials: true,
   optionsSuccessStatus: 200,
 };
