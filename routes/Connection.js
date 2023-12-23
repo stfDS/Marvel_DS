@@ -12,6 +12,10 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   origin: process.env.ORIGIN,
 };
+const corsOptions2 = {
+  optionsSuccessStatus: 200,
+  origin: process.env.ORIGIN,
+};
 
 userRouter.post("/signup", async (req, res) => {
   try {
@@ -44,7 +48,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", cors(corsOptions), async (req, res) => {
+userRouter.post("/login", cors(corsOptions2), async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
