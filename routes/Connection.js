@@ -71,7 +71,7 @@ userRouter.post("/login", async (req, res) => {
     //   maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     // });
 
-    req.universalCookies.set("jtw", token, {
+    req.universalCookies.set("jwt", token, {
       path: "/",
       httpOnly: true,
       secure: true,
