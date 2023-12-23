@@ -1046,7 +1046,14 @@ undici-types@~5.26.4:
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
-universal-cookie@^6.1.1:
+universal-cookie-express@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/universal-cookie-express/-/universal-cookie-express-6.1.1.tgz#99e6fd19dbf55b15f5aeba2643b87ef8f93d25d2"
+  integrity sha512-2bf5eFKOtT7AGm7XbI/Nv0IqVa3E+Fle64vrToKtL3P9JMMZOycDEyrNasdA8n9Xqb4h17fPgFqhc2DHK/7VgA==
+  dependencies:
+    universal-cookie "^6.0.0"
+
+universal-cookie@^6.0.0, universal-cookie@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-6.1.1.tgz#2d619e21804c93b39ff0c77fe47dafd7a492346d"
   integrity sha512-33S9x3CpdUnnjwTNs2Fgc41WGve2tdLtvaK2kPSbZRc5pGpz2vQFbRWMxlATsxNNe/Cy8SzmnmbuBM85jpZPtA==

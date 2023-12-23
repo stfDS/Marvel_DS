@@ -10,6 +10,7 @@ require("./database/dataIndex");
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+const universalCookieExpress = require("universal-cookie-express");
 
 const homeRoutes = require("./routes/Home");
 const comicsRoutes = require("./routes/Comics");
