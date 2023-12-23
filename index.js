@@ -1,12 +1,15 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 
+require("dotenv").config();
 require("./database/dataIndex");
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const homeRoutes = require("./routes/Home");
 const comicsRoutes = require("./routes/Comics");
