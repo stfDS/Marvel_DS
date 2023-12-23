@@ -66,7 +66,7 @@ userRouter.post("/login", async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "Lax",
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
 
