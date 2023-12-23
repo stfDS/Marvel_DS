@@ -74,6 +74,8 @@ userRouter.post("/login", async (req, res) => {
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
 
+    res.setHeader("Set-Cookie", cookie.get("jwt").toHeader());
+
     res.status(200).json({ ...user._doc, password: undefined, token });
   } catch (err) {
     res.status(500).json({
