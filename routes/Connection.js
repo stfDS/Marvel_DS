@@ -9,7 +9,6 @@ require("dotenv").config();
 const Cookie = require("universal-cookies");
 
 const corsOptions = {
-  origin: "https://marvel-ds.netlify.app",
   credentials: true,
   optionsSuccessStatus: 200,
 };
