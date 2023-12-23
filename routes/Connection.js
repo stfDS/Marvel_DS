@@ -71,6 +71,7 @@ userRouter.post("/login", async (req, res) => {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
+      secure: true,
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
 
