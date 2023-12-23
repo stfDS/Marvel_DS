@@ -6,11 +6,11 @@ const isAuthenticated = require("../middlewares/isAuthenticated.middleware");
 const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
-const Cookie = require("universal-cookies");
 
 const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200,
+  origin: process.env.ORIGIN,
 };
 
 userRouter.post("/signup", async (req, res) => {
@@ -64,17 +64,12 @@ userRouter.post("/login", async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-    const cookie = new Cookie();
-
-    cookie.set("jwt", token, {
-      path: "/",
+    res.cookie("jwt", token, {
       httpOnly: true,
       sameSite: "lax",
-      secure: true,
+      secure: process.env.JWT_SECURE_COOKIE,
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
-
-    res.setHeader("Set-Cookie", cookie.get("jwt").toHeader());
 
     res.status(200).json({ ...user._doc, password: undefined, token });
   } catch (err) {
