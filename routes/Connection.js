@@ -44,7 +44,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
+userRouter.post("/login", cors(corsOptions), async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
