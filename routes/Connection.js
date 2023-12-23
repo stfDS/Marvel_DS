@@ -6,6 +6,7 @@ const isAuthenticated = require("../middlewares/isAuthenticated.middleware");
 const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
+const Cookie = require("universal-cookies");
 
 const corsOptions = {
   origin: "https://marvel-ds.netlify.app",
@@ -64,9 +65,12 @@ userRouter.post("/login", async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-    res.cookie.set("jwt", token, {
+    const cookie = new Cookie();
+
+    cookie.set("jwt", token, {
+      path: "/",
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "lax",
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
 
