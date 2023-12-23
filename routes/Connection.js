@@ -92,11 +92,32 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
   }
 });
 
-userRouter.get("/refresh", cors(corsOptions), isAuthenticated, (req, res) => {
+userRouter.get("/refresh", cors(corsOptions), async (req, res) => {
   try {
-    const user = req.user;
+    //   const user = req.user;
 
-    res.status(200).json({ ...user._doc, password: undefined });
+    //   res.status(200).json({ ...user._doc, password: undefined });
+    // }
+
+    const token = req.cookies.jwt;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, token" });
+    }
+
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized , id" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized , user" });
+    }
+
+    req.user = user;
   } catch (err) {
     res.status(500).json({
       message: "An error has occurred",
