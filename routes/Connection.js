@@ -80,7 +80,7 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
       httpOnly: true,
       secure: true,
       maxAge: 3600000, // 1 heure
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     res.status(200).json({ ...user._doc, password: undefined });
@@ -99,7 +99,7 @@ userRouter.get("/refresh", cors(corsOptions), async (req, res) => {
     //   res.status(200).json({ ...user._doc, password: undefined });
     // }
 
-    const token = req.cookies.jwt;
+    const token = req.cookies;
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized, token" });
