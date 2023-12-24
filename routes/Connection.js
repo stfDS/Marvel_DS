@@ -65,14 +65,6 @@ userRouter.post("/login", async (req, res) => {
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
 
-    // req.universalCookies.set("jwt", token, {
-    //   path: "/",
-    //   httpOnly: true,
-    //   secure: true,
-    //   maxAge: 3600000, // 1 heure
-    //   sameSite: "none",
-    // });
-
     res.status(200).json({ ...user._doc, password: undefined, token });
   } catch (err) {
     res.status(500).json({
@@ -98,7 +90,7 @@ userRouter.get("/refresh", isAuthenticated, async (req, res) => {
 });
 
 userRouter.delete("/logout", async (req, res) => {
-  res.clearCookie("jwt");
+  res.clearCookie("jwt", { sameSite: "none" });
   res.status(200).json({ message: "Déconnexion" });
 });
 
