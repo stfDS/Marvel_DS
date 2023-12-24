@@ -90,7 +90,10 @@ userRouter.get("/refresh", isAuthenticated, async (req, res) => {
 });
 
 userRouter.delete("/logout", async (req, res) => {
-  res.clearCookie("jwt", { sameSite: "none" });
+  res.clearCookie("jwt", {
+    sameSite: "none",
+    secure: process.env.JWT_SECURE_COOKIE,
+  });
   res.status(200).json({ message: "Déconnexion" });
 });
 
