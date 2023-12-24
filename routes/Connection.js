@@ -7,16 +7,6 @@ const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
 
-const corsOptions = {
-  credentials: true,
-  optionsSuccessStatus: 200,
-  origin: process.env.ORIGIN,
-};
-const corsOptions2 = {
-  optionsSuccessStatus: 200,
-  origin: process.env.ORIGIN,
-};
-
 userRouter.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
@@ -48,7 +38,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", cors(corsOptions2), async (req, res) => {
+userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -68,20 +58,20 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-    // res.cookie("jwt", token, {
-    //   httpOnly: true,
-    //   sameSite: "lax",
-    //   secure: process.env.JWT_SECURE_COOKIE,
-    //   maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
-    // });
-
-    req.universalCookies.set("jwt", token, {
-      path: "/",
+    res.cookie("jwt", token, {
       httpOnly: true,
-      secure: true,
-      maxAge: 3600000, // 1 heure
-      sameSite: "none",
+      sameSite: "lax",
+      secure: process.env.JWT_SECURE_COOKIE,
+      maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
+
+    // req.universalCookies.set("jwt", token, {
+    //   path: "/",
+    //   httpOnly: true,
+    //   secure: true,
+    //   maxAge: 3600000, // 1 heure
+    //   sameSite: "none",
+    // });
 
     res.status(200).json({ ...user._doc, password: undefined, token });
   } catch (err) {
@@ -92,32 +82,13 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
   }
 });
 
-userRouter.get("/refresh", cors(corsOptions), async (req, res) => {
+userRouter.get("/refresh", isAuthenticated, async (req, res) => {
   try {
-    //   const user = req.user;
+    const user = req.user;
 
-    //   res.status(200).json({ ...user._doc, password: undefined });
-    // }
-
-    const token = req.cookies;
-
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized, token" });
-    }
-
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized , id" });
-    }
-
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized , user" });
-    }
-
-    req.user = user;
+    res
+      .status(200)
+      .json({ ...user._doc, password: undefined, reqq: "refresh" });
   } catch (err) {
     res.status(500).json({
       message: "An error has occurred",
@@ -126,7 +97,7 @@ userRouter.get("/refresh", cors(corsOptions), async (req, res) => {
   }
 });
 
-userRouter.delete("/logout", cors(corsOptions), async (req, res) => {
+userRouter.delete("/logout", async (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ message: "Déconnexion" });
 });

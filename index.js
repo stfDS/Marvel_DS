@@ -7,7 +7,13 @@ const universalCookieExpress = require("universal-cookie-express");
 require("dotenv").config();
 require("./database/dataIndex");
 
-app.use(cors());
+const corsOptions = {
+  credentials: true,
+  optionsSuccessStatus: 200,
+  origin: process.env.ORIGIN,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(universalCookieExpress());
