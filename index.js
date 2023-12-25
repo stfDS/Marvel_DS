@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
-const universalCookieExpress = require("universal-cookie-express");
 require("dotenv").config();
 require("./database/dataIndex");
 
@@ -16,7 +15,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-app.use(universalCookieExpress());
 
 const homeRoutes = require("./routes/Home");
 const comicsRoutes = require("./routes/Comics");

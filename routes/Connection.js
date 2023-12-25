@@ -7,7 +7,13 @@ const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
 
-userRouter.post("/signup", async (req, res) => {
+const corsOptions2 = {
+  credentials: false,
+  optionsSuccessStatus: 200,
+  origin: process.env.ORIGIN,
+};
+
+userRouter.post("/signup", cors(corsOptions2), async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
@@ -28,7 +34,6 @@ userRouter.post("/signup", async (req, res) => {
 
     await newUser.save();
 
-    // res.status(201).json({ message: "User successfully created"  });
     res.status(201).json({ message: "User successfully created" });
   } catch (err) {
     res.status(500).json({
@@ -38,7 +43,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
+userRouter.post("/login", cors(corsOptions2), async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -78,9 +83,7 @@ userRouter.get("/refresh", isAuthenticated, async (req, res) => {
   try {
     const user = req.user;
 
-    res
-      .status(200)
-      .json({ ...user._doc, password: undefined, reqq: "refresh" });
+    res.status(200).json({ ...user._doc, password: undefined });
   } catch (err) {
     res.status(500).json({
       message: "An error has occurred",
@@ -89,7 +92,7 @@ userRouter.get("/refresh", isAuthenticated, async (req, res) => {
   }
 });
 
-userRouter.delete("/logout", async (req, res) => {
+userRouter.delete("/logout", cors(corsOptions2), async (req, res) => {
   res.clearCookie("jwt", {
     sameSite: "none",
     secure: process.env.JWT_SECURE_COOKIE,
