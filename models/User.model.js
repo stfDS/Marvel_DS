@@ -16,8 +16,8 @@ const User = mongoose.model("User", {
     required: true,
   },
   favorites: {
-    characters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Character" }],
-    comics: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comic" }],
+    characters: [],
+    comics: [],
   },
 });
 

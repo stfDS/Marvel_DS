@@ -2,12 +2,18 @@ const User = require("../models/User.model");
 
 const FavCharacterAdd = async (req, res) => {
   try {
-    const user = await User.findById(req.params.Id);
+    const user = req.user;
     const characterId = req.body.characterId;
+    const title = req.body.title;
 
     if (!user.favorites.characters.includes(characterId)) {
       user.favorites.characters.push(characterId);
       await user.save();
+
+      res.status(201).json(title);
+    }
+    if (user.favorites.characters.includes(characterId)) {
+      res.status(406).json(title);
     }
   } catch (error) {
     res.json({ message: error });
@@ -16,27 +22,21 @@ const FavCharacterAdd = async (req, res) => {
 
 const FavComicAdd = async (req, res) => {
   try {
-    const user = await User.findById(req.params.Id);
-    const comicId = req.body.cimicId;
+    const user = req.user;
+    const comicId = req.body.comicId;
+    const title = req.body.title;
 
     if (!user.favorites.comics.includes(comicId)) {
       user.favorites.comics.push(comicId);
       await user.save();
+      res.status(201).json(title);
+    }
+    if (user.favorites.comics.includes(comicId)) {
+      res.status(406).json(title);
     }
   } catch (error) {
-    res.json({ message: error });
+    res.status(500).json({ message: error });
   }
 };
 
-const GetFavotites = async (req, res) => {
-  try {
-    const user = await User.findById(req.body.id);
-    console.log(req.body.id);
-
-    res.status(200).json(user.favorites);
-  } catch (error) {
-    res.json({ message: error });
-  }
-};
-
-module.exports = { FavCharacterAdd, FavComicAdd, GetFavotites };
+module.exports = { FavCharacterAdd, FavComicAdd };

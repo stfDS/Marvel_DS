@@ -6,14 +6,9 @@ const isAuthenticated = require("../middlewares/isAuthenticated.middleware");
 const {
   FavCharacterAdd,
   FavComicAdd,
-  GetFavotites,
 } = require("../controllers/Favorites.contoler");
 
 const favRouter = express.Router();
-
-favRouter.get("/favorites", isAuthenticated, (req, res) => {
-  GetFavotites(req, res);
-});
 
 favRouter.post("/addfav/comic", isAuthenticated, (req, res) => {
   FavComicAdd(req, res);
