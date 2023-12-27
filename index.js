@@ -7,8 +7,6 @@ require("dotenv").config();
 require("./database/dataIndex");
 
 const corsOptions = {
-  credentials: true,
-  optionsSuccessStatus: 200,
   origin: process.env.ORIGIN,
 };
 

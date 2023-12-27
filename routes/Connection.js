@@ -8,12 +8,11 @@ const userRouter = express.Router();
 require("dotenv").config();
 
 const corsOptions2 = {
-  credentials: false,
-  optionsSuccessStatus: 200,
+  credentials: true,
   origin: process.env.ORIGIN,
 };
 
-userRouter.post("/signup", cors(corsOptions2), async (req, res) => {
+userRouter.post("/signup", async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
@@ -22,7 +21,10 @@ userRouter.post("/signup", cors(corsOptions2), async (req, res) => {
     }
     const user = await User.findOne({ email });
 
-    if (user) return res.status(400).json({ message: "Email already used" });
+    if (user) {
+      return res.status(400).json({ message: "Email already used" });
+    }
+
     const hashPassw = await bcrypt.hash(password, 10);
     const newUser = new User({
       email,
@@ -43,7 +45,7 @@ userRouter.post("/signup", cors(corsOptions2), async (req, res) => {
   }
 });
 
-userRouter.post("/login", cors(corsOptions2), async (req, res) => {
+userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -65,7 +67,7 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: process.env.SAMESITE,
       secure: process.env.JWT_SECURE_COOKIE,
       maxAge: parseInt(process.env.JWT_EXPIRATION, 10),
     });
@@ -79,22 +81,27 @@ userRouter.post("/login", cors(corsOptions2), async (req, res) => {
   }
 });
 
-userRouter.get("/refresh", isAuthenticated, async (req, res) => {
-  try {
-    const user = req.user;
+userRouter.get(
+  "/refresh",
+  cors(corsOptions2),
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const user = req.user;
 
-    res.status(200).json({ ...user._doc, password: undefined });
-  } catch (err) {
-    res.status(500).json({
-      message: "An error has occurred",
-      err: err.message,
-    });
+      res.status(200).json({ ...user._doc, password: undefined });
+    } catch (err) {
+      res.status(500).json({
+        message: "An error has occurred",
+        err: err.message,
+      });
+    }
   }
-});
+);
 
-userRouter.delete("/logout", cors(corsOptions2), async (req, res) => {
+userRouter.delete("/logout", async (req, res) => {
   res.clearCookie("jwt", {
-    sameSite: "none",
+    sameSite: process.env.SAMESITE,
     secure: process.env.JWT_SECURE_COOKIE,
   });
   res.status(200).json({ message: "Déconnexion" });
