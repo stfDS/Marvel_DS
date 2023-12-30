@@ -20,11 +20,11 @@ favRouter.post("/addfav/character", isAuthenticated, (req, res) => {
   FavCharacterAdd(req, res);
 });
 
-favRouter.delete("/rmfav/comic", isAuthenticated, (req, res) => {
+favRouter.put("/rmfav/comic", isAuthenticated, (req, res) => {
   FavComicRm(req, res);
 });
 
-favRouter.delete("/rmfav/character", isAuthenticated, (req, res) => {
+favRouter.put("/rmfav/character", isAuthenticated, (req, res) => {
   FavCharacterRm(req, res);
 });
 

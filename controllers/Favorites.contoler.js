@@ -43,49 +43,49 @@ const FavComicRm = async (req, res) => {
     const user = req.user;
     const comicId = req.body.comicId;
 
-    // Vérifiez si comicId est fourni
     if (!comicId) {
       return res.status(400).json({ message: "Comic ID is required." });
     }
 
-    // Trouvez l'indice du comic et vérifiez s'il existe dans les favoris
     const comicIndex = user.favorites.comics.indexOf(comicId);
     if (comicIndex === -1) {
-      // Si le comic n'est pas trouvé dans les favoris
       return res.status(404).json({ message: "Comic not found in favorites." });
     }
 
-    // Supprimez le comic des favoris
     user.favorites.comics.splice(comicIndex, 1);
 
-    // Sauvegardez les modifications de l'utilisateur
     await user.save();
 
-    // Réponse en cas de succès
     res.status(200).json({ message: "Comic removed from favorites." });
   } catch (error) {
-    // Gestion des erreurs
-    res.status(500).json({ message: "end" });
+    res.status(500).json({ message: error });
   }
 };
 const FavCharacterRm = async (req, res) => {
   try {
     const user = req.user;
     const characterId = req.body.characterId;
-    const title = req.body.title;
 
-    if (user.favorites.characters.includes(characterId)) {
-      res.status(205).json(title);
+    if (!characterId) {
+      return res.status(400).json({ message: "Character ID is required." });
     }
-    if (!user.favorites.characters.includes(characterId)) {
-      user.favorites.characters.push(characterId);
-      await user.save();
 
-      res.status(201).json(title);
+    const characterIndex = user.favorites.characters.indexOf(characterId);
+
+    if (characterIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "Character not found in favorites." });
     }
+
+    user.favorites.characters.splice(characterIndex, 1);
+
+    await user.save();
+
+    res.status(200).json({ message: "Character removed from favorites." });
   } catch (error) {
-    res.json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { FavCharacterAdd, FavComicAdd, FavComicRm };
+module.exports = { FavCharacterAdd, FavComicAdd, FavComicRm, FavCharacterRm };
