@@ -3,7 +3,6 @@ const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const isAuthenticated = require("../middlewares/isAuthenticated.middleware");
-const cors = require("cors");
 const userRouter = express.Router();
 require("dotenv").config();
 
@@ -99,7 +98,7 @@ userRouter.delete("/logout", async (req, res) => {
     sameSite: "none",
     secure: process.env.JWT_SECURE_COOKIE,
   });
-  res.status(200).json({ message: "Déconnexion" });
+  res.status(200).json({ message: "Deconnected" });
 });
 
 module.exports = userRouter;
