@@ -16,7 +16,7 @@ const FavCharacterAdd = async (req, res) => {
       res.status(201).json(title);
     }
   } catch (error) {
-    res.json({ message: error });
+    res.status(200).json({ message: error });
   }
 };
 

@@ -16,13 +16,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-const homeRoutes = require("./routes/Home");
+const charactersRoutes = require("./routes/AllCharacters");
 const comicsRoutes = require("./routes/Comics");
 const characterRoutes = require("./routes/Character");
 const favoritesRoutes = require("./routes/Favorites");
 const SignRoutes = require("./routes/Connection");
 
-app.use(homeRoutes);
+app.use(charactersRoutes);
 app.use(comicsRoutes);
 app.use(characterRoutes);
 app.use(favoritesRoutes);
